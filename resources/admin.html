@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="it" data-page="admin">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruota della Fortuna - Admin</title>
+  <link rel="icon" type="image/svg+xml" href="wheel-icon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Stili specifici per admin */
+    
+    /* Header centrato */
+    .app-header {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+    
+    .paypal-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      background-image: url('paypal_logo_icon.png');
+      background-size: 70%;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    
+    .paypal-icon:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: #0070ba;
+      transform: scale(1.1);
+    }
+    
+    .app-title {
+      animation: titleShimmer 12s ease-in-out infinite;
+    }
+    
+    @keyframes titleShimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 300% center; }
+    }
+    
+    .nav-link {
+      display: inline-flex;
+      margin-top: 16px;
+    }
+    
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--accent-cyan);
+    }
+    
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+    
+    .preview-section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .preview-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .preview-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.3), transparent);
+    }
+    
+    /* Modal per editing */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    
+    .modal-overlay.active .modal {
+      transform: scale(1);
+    }
+    
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    
+    /* Modal Conferma Eliminazione */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-box {
+      background: linear-gradient(180deg, rgba(30, 15, 40, 0.98), rgba(20, 10, 30, 0.98));
+      border: 2px solid var(--accent-pink);
+      border-radius: var(--radius-xl);
+      padding: 0;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 0 50px rgba(255, 45, 149, 0.3);
+      overflow: hidden;
+    }
+    
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .modal-header-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .modal-header-icon.danger {
+      background: rgba(255, 80, 80, 0.2);
+      border: 2px solid rgba(255, 80, 80, 0.5);
+    }
+    
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    
+    .modal-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    
+    .modal-body {
+      padding: 20px;
+    }
+    
+    .modal-message {
+      color: var(--text-secondary);
+      margin-bottom: 15px;
+    }
+    
+    .delete-phrase-preview {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 12px 15px;
+      font-size: 0.9rem;
+    }
+    
+    .delete-phrase-preview .preview-category {
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+    
+    .delete-phrase-preview .preview-phrase {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      justify-content: flex-end;
+    }
+    
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid;
+    }
+    
+    .modal-btn.cancel {
+      background: transparent;
+      border-color: rgba(255, 255, 255, 0.3);
+      color: var(--text-secondary);
+    }
+    
+    .modal-btn.cancel:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .modal-btn.danger {
+      background: rgba(255, 80, 80, 0.8);
+      border-color: rgba(255, 80, 80, 1);
+      color: white;
+    }
+    
+    .modal-btn.danger:hover {
+      background: rgba(255, 80, 80, 1);
+      box-shadow: 0 0 15px rgba(255, 80, 80, 0.5);
+    }
+    
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .toast {
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      background: rgba(30, 30, 30, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      animation: toastIn 0.3s ease;
+      max-width: 350px;
+    }
+    
+    .toast.success {
+      border-color: var(--accent-green);
+      background: rgba(0, 255, 136, 0.15);
+    }
+    
+    .toast.error {
+      border-color: #ff4466;
+      background: rgba(255, 68, 102, 0.15);
+    }
+    
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    /* Character counter */
+    .char-counter {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 6px;
+    }
+    
+    .char-counter.warning { color: var(--accent-orange); }
+    .char-counter.error { color: #ff4466; }
+  </style>
+</head>
+<body>
+  
+  <div class="app-container">
+    <!-- Header centrato -->
+    <header class="app-header">
+      <h1 class="app-title">Ruota della Fortuna</h1>
+      <p class="app-subtitle">Pannello Amministrazione</p>
+      <a href="https://paypal.me/dimichele99" target="_blank" rel="noopener noreferrer" class="paypal-icon" data-tooltip="Sostieni il progetto"></a>
+      <a href="../game.html" class="nav-link">
+        Vai al Gioco
+      </a>
+    </header>
+    
+    <!-- Layout principale -->
+    <div class="main-layout">
+      <!-- Colonna sinistra: Form e lista -->
+      <div class="control-column">
+        <!-- Card: Aggiungi frase -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              Aggiungi Frase
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="inputCategory">Categoria</label>
+              <input type="text" id="inputCategory" placeholder="Es. PROVERBIO, FILM, PERSONAGGIO...">
+            </div>
+            
+            <div class="form-group">
+              <label for="inputPhrase">Frase</label>
+              <textarea id="inputPhrase" placeholder="Inserisci la frase (max 52 caratteri)" rows="3"></textarea>
+              <div class="char-counter" id="charCounter">0/52 celle</div>
+            </div>
+            
+            <div class="btn-group">
+              <button class="btn btn-primary btn-block" id="btnAddPhrase">
+                Aggiungi Frase
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Card: Statistiche -->
+        <div class="card" style="margin-top: 20px;">
+          <div class="card-header">
+            <h2 class="card-title">
+              Statistiche
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="stats-bar">
+              <div class="stat-item">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Frasi totali</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statCategories">0</div>
+                <div class="stat-label">Categorie</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statAvgLength">0</div>
+                <div class="stat-label">Media caratteri</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Card: Lista frasi -->
+        <div class="card" style="margin-top: 20px;">
+          <div class="card-header">
+            <h2 class="card-title">
+              Archivio Frasi
+            </h2>
+            <span class="badge badge-cyan" id="phraseCount">0 frasi</span>
+          </div>
+          <div class="card-body">
+            <div class="phrases-list" id="phrasesList">
+              <!-- Generato dinamicamente -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Colonna destra: Anteprima tabellone -->
+      <div class="preview-column">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              Anteprima Tabellone
+            </h2>
+          </div>
+          <div class="card-body">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Clicca su una frase nella lista per visualizzare l'anteprima del tabellone.
+            </p>
+            
+            <div class="board-container">
+              <div class="board-outer">
+                <div class="board-grid" id="boardGrid"></div>
+                <div class="category-box" id="categoryBox">— CATEGORIA —</div>
+              </div>
+            </div>
+            
+            <div class="btn-group" style="margin-top: 16px; justify-content: center;">
+              <button class="btn btn-secondary" id="btnRevealAll">
+                Mostra frase
+              </button>
+              <button class="btn btn-secondary" id="btnHideAll">
+                Nascondi frase
+              </button>
+            </div>
+            
+            <div class="preview-section">
+              <div class="preview-title">
+                Frase Selezionata
+              </div>
+              <div id="selectedPhraseInfo" style="color: var(--text-secondary); font-size: 0.9rem;">
+                Nessuna frase selezionata
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal per editing -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <h3 class="modal-title">Modifica Frase</h3>
+      <div class="form-group">
+        <label for="modalEditCategory">Categoria</label>
+        <input type="text" id="modalEditCategory">
+      </div>
+      <div class="form-group">
+        <label for="modalEditPhrase">Frase</label>
+        <textarea id="modalEditPhrase" rows="3"></textarea>
+        <div class="char-counter" id="modalEditCharCounter">0/52 celle</div>
+      </div>
+      <input type="hidden" id="modalEditIndex">
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btnCancelEdit">Annulla</button>
+        <button class="btn btn-primary" id="btnSaveEdit">Salva</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer"></div>
+  
+  <!-- Modal Conferma Eliminazione -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-header-icon danger"></div>
+        <div class="modal-header-text">
+          <div class="modal-title">Elimina Frase</div>
+          <div class="modal-subtitle">Questa azione è irreversibile</div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p class="modal-message" id="deleteModalMessage">
+          Sei sicuro di voler eliminare questa frase?
+        </p>
+        <div class="delete-phrase-preview" id="deletePhrasePreview"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel" id="btnDeleteCancel">Annulla</button>
+        <button class="modal-btn danger" id="btnDeleteConfirm">Elimina</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script>
+    // ==========================================
+    // ADMIN PAGE CONTROLLER
+    // ==========================================
+    
+    const { RuotaApp } = window;
+    
+    // Elementi DOM - rinominati per evitare conflitti con funzioni app.js
+    const elInputCategory = document.getElementById('inputCategory');
+    const elInputPhrase = document.getElementById('inputPhrase');
+    const elCharCounter = document.getElementById('charCounter');
+    const elBtnAddPhrase = document.getElementById('btnAddPhrase');
+    const elPhrasesList = document.getElementById('phrasesList');
+    const elPhraseCount = document.getElementById('phraseCount');
+    const elBoardGrid = document.getElementById('boardGrid');
+    const elCategoryBox = document.getElementById('categoryBox');
+    const elBtnRevealAll = document.getElementById('btnRevealAll');
+    const elBtnHideAll = document.getElementById('btnHideAll');
+    const elSelectedPhraseInfo = document.getElementById('selectedPhraseInfo');
+    const elStatTotal = document.getElementById('statTotal');
+    const elStatCategories = document.getElementById('statCategories');
+    const elStatAvgLength = document.getElementById('statAvgLength');
+    
+    // Modal elements
+    const elEditModal = document.getElementById('editModal');
+    const elModalEditCategory = document.getElementById('modalEditCategory');
+    const elModalEditPhrase = document.getElementById('modalEditPhrase');
+    const elModalEditCharCounter = document.getElementById('modalEditCharCounter');
+    const elModalEditIndex = document.getElementById('modalEditIndex');
+    const elBtnCancelEdit = document.getElementById('btnCancelEdit');
+    const elBtnSaveEdit = document.getElementById('btnSaveEdit');
+    
+    const elToastContainer = document.getElementById('toastContainer');
+    
+    // ==========================================
+    // TOAST NOTIFICATIONS
+    // ==========================================
+    
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      elToastContainer.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(50px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+    
+    // ==========================================
+    // CHARACTER COUNTER
+    // ==========================================
+    
+    function updateCharCounter(textarea, counter) {
+      const cellsNeeded = RuotaApp.countPhraseCells(textarea.value);
+      
+      counter.textContent = `${cellsNeeded}/${RuotaApp.TOTAL_CELLS} celle`;
+      counter.classList.remove('warning', 'error');
+      
+      if (cellsNeeded > RuotaApp.TOTAL_CELLS) {
+        counter.classList.add('error');
+      } else if (cellsNeeded > RuotaApp.TOTAL_CELLS - 5) {
+        counter.classList.add('warning');
+      }
+    }
+    
+    elInputPhrase.addEventListener('input', () => updateCharCounter(elInputPhrase, elCharCounter));
+    elModalEditPhrase.addEventListener('input', () => updateCharCounter(elModalEditPhrase, elModalEditCharCounter));
+    
+    // ==========================================
+    // STATISTICS
+    // ==========================================
+    
+    function updateStats() {
+      const phrases = RuotaApp.state.phrases;
+      
+      elStatTotal.textContent = phrases.length;
+      
+      const categories = new Set(phrases.map(p => p.category || 'Senza categoria'));
+      elStatCategories.textContent = categories.size;
+      
+      if (phrases.length > 0) {
+        const totalLen = phrases.reduce((sum, p) => sum + p.phrase.length, 0);
+        elStatAvgLength.textContent = Math.round(totalLen / phrases.length);
+      } else {
+        elStatAvgLength.textContent = '0';
+      }
+      
+      elPhraseCount.textContent = `${phrases.length} ${phrases.length === 1 ? 'frase' : 'frasi'}`;
+    }
+    
+    // ==========================================
+    // PHRASES LIST
+    // ==========================================
+    
+    function renderPhrasesList() {
+      elPhrasesList.innerHTML = RuotaApp.renderPhrasesListHTML();
+      
+      // Event listeners
+      document.querySelectorAll('.phrase-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          if (e.target.closest('.btn')) return;
+          const index = parseInt(item.dataset.index);
+          selectPhrasePreview(index);
+        });
+      });
+      
+      document.querySelectorAll('.btn-edit-phrase').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openEditModal(parseInt(btn.dataset.index));
+        });
+      });
+      
+      document.querySelectorAll('.btn-delete-phrase').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deletePhraseItem(parseInt(btn.dataset.index));
+        });
+      });
+      
+      updateStats();
+    }
+    
+    // ==========================================
+    // SELECT PHRASE & PREVIEW
+    // ==========================================
+    
+    function selectPhrasePreview(index) {
+      const phrase = RuotaApp.state.phrases[index];
+      if (!phrase) return;
+      
+      RuotaApp.state.ui.selectedPhraseIndex = index;
+      
+      document.querySelectorAll('.phrase-item').forEach((item, i) => {
+        item.classList.toggle('selected', i === index);
+      });
+      
+      RuotaApp.buildSlotsFromPhrase(phrase.phrase, phrase.category);
+      renderBoard();
+      
+      elSelectedPhraseInfo.innerHTML = `
+        <strong>Categoria:</strong> ${phrase.category || 'Nessuna'}<br>
+        <strong>Frase:</strong> ${phrase.phrase}<br>
+        <strong>Lunghezza:</strong> ${phrase.phrase.length}/${RuotaApp.TOTAL_CELLS} caratteri
+      `;
+    }
+    
+    function renderBoard() {
+      elBoardGrid.innerHTML = RuotaApp.renderBoardHTML();
+      elCategoryBox.textContent = RuotaApp.renderCategoryHTML();
+    }
+    
+    // ==========================================
+    // ADD PHRASE
+    // ==========================================
+    
+    elBtnAddPhrase.addEventListener('click', () => {
+      const category = elInputCategory.value.trim();
+      const phrase = elInputPhrase.value.trim();
+      
+      if (!phrase) {
+        showToast('Inserisci una frase.', 'error');
+        return;
+      }
+      
+      const result = RuotaApp.addPhrase(category, phrase);
+      
+      if (result.ok) {
+        showToast('Frase aggiunta con successo!', 'success');
+        elInputCategory.value = '';
+        elInputPhrase.value = '';
+        updateCharCounter(elInputPhrase, elCharCounter);
+        renderPhrasesList();
+        selectPhrasePreview(RuotaApp.state.phrases.length - 1);
+      } else {
+        showToast(result.msg, 'error');
+      }
+    });
+    
+    // ==========================================
+    // EDIT PHRASE
+    // ==========================================
+    
+    function openEditModal(index) {
+      const phrase = RuotaApp.state.phrases[index];
+      if (!phrase) return;
+      
+      elModalEditCategory.value = phrase.category;
+      elModalEditPhrase.value = phrase.phrase;
+      elModalEditIndex.value = index;
+      updateCharCounter(elModalEditPhrase, elModalEditCharCounter);
+      
+      elEditModal.classList.add('active');
+    }
+    
+    function closeEditModal() {
+      elEditModal.classList.remove('active');
+    }
+    
+    elBtnCancelEdit.addEventListener('click', closeEditModal);
+    
+    elEditModal.addEventListener('click', (e) => {
+      if (e.target === elEditModal) closeEditModal();
+    });
+    
+    elBtnSaveEdit.addEventListener('click', () => {
+      const index = parseInt(elModalEditIndex.value);
+      const category = elModalEditCategory.value.trim();
+      const phrase = elModalEditPhrase.value.trim();
+      
+      const result = RuotaApp.editPhrase(index, category, phrase);
+      
+      if (result.ok) {
+        showToast('Frase modificata con successo!', 'success');
+        closeEditModal();
+        renderPhrasesList();
+        
+        if (RuotaApp.state.ui.selectedPhraseIndex === index) {
+          selectPhrasePreview(index);
+        }
+      } else {
+        showToast(result.msg, 'error');
+      }
+    });
+    
+    // ==========================================
+    // DELETE PHRASE
+    // ==========================================
+    
+    // Modal eliminazione
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteModalMessage = document.getElementById('deleteModalMessage');
+    const deletePhrasePreview = document.getElementById('deletePhrasePreview');
+    const btnDeleteCancel = document.getElementById('btnDeleteCancel');
+    const btnDeleteConfirm = document.getElementById('btnDeleteConfirm');
+    let pendingDeleteIndex = null;
+    
+    function showDeleteModal(index) {
+      const phrase = RuotaApp.state.phrases[index];
+      if (!phrase) return;
+      
+      pendingDeleteIndex = index;
+      deletePhrasePreview.innerHTML = `
+        <div class="preview-category">${phrase.category}</div>
+        <div class="preview-phrase">"${phrase.phrase}"</div>
+      `;
+      deleteModal.classList.add('active');
+    }
+    
+    btnDeleteCancel.addEventListener('click', () => {
+      deleteModal.classList.remove('active');
+      pendingDeleteIndex = null;
+    });
+    
+    btnDeleteConfirm.addEventListener('click', () => {
+      if (pendingDeleteIndex === null) return;
+      
+      deleteModal.classList.remove('active');
+      const index = pendingDeleteIndex;
+      pendingDeleteIndex = null;
+      
+      const result = RuotaApp.deletePhrase(index);
+      
+      if (result.ok) {
+        showToast('Frase eliminata con successo!', 'success');
+        
+        if (RuotaApp.state.ui.selectedPhraseIndex === index) {
+          RuotaApp.state.ui.selectedPhraseIndex = -1;
+          initEmptyBoard();
+        } else if (RuotaApp.state.ui.selectedPhraseIndex > index) {
+          RuotaApp.state.ui.selectedPhraseIndex--;
+        }
+        
+        renderPhrasesList();
+      } else {
+        showToast(result.msg, 'error');
+      }
+    });
+    
+    deleteModal.addEventListener('click', (e) => {
+      if (e.target === deleteModal) {
+        deleteModal.classList.remove('active');
+        pendingDeleteIndex = null;
+      }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && deleteModal.classList.contains('active')) {
+        deleteModal.classList.remove('active');
+        pendingDeleteIndex = null;
+      }
+    });
+    
+    function deletePhraseItem(index) {
+      showDeleteModal(index);
+    }
+    
+    
+    // ==========================================
+    // BOARD CONTROLS
+    // ==========================================
+    
+    elBtnRevealAll.addEventListener('click', () => {
+      RuotaApp.revealAll();
+      renderBoard();
+    });
+    
+    elBtnHideAll.addEventListener('click', () => {
+      RuotaApp.hideAllLetters();
+      renderBoard();
+    });
+    
+    // ==========================================
+    // INIT EMPTY BOARD
+    // ==========================================
+    
+    function initEmptyBoard() {
+      RuotaApp.buildSlotsFromPhrase('', '');
+      renderBoard();
+    }
+    
+    // ==========================================
+    // INITIALIZATION
+    // ==========================================
+    
+    async function init() {
+      // Aspetta che le frasi siano caricate da app.js
+      await RuotaApp.loadPhrases();
+      
+      renderPhrasesList();
+      initEmptyBoard();
+      
+      if (RuotaApp.state.phrases.length > 0) {
+        selectPhrasePreview(0);
+      }
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+    
+    // Messaggio di credito
+    console.log('Creato da Michele Di Gennaro. Sostieni il progetto su https://paypal.me/dimichele99');
+  </script>
+</body>
+</html>
