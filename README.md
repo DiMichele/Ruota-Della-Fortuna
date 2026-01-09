@@ -1,4 +1,4 @@
-# 🎡 Ruota della Fortuna
+# Ruota della Fortuna
 
 Un'applicazione web interattiva che riproduce il celebre gioco televisivo "La Ruota della Fortuna". Perfetta per serate di gioco, eventi, feste o semplicemente per divertirsi con amici e familiari.
 
@@ -8,61 +8,53 @@ Un'applicazione web interattiva che riproduce il celebre gioco televisivo "La Ru
 
 ---
 
-## 📋 Indice
+## Indice
 
-- [Caratteristiche](#-caratteristiche)
-- [Struttura del Gioco](#-struttura-del-gioco)
-- [Installazione](#-installazione)
-- [Come Giocare](#-come-giocare)
-- [Pannello Admin](#-pannello-admin)
-- [Struttura dei File](#-struttura-dei-file)
-- [Personalizzazione](#-personalizzazione)
-- [Supporta il Progetto](#-supporta-il-progetto)
-- [Licenza](#-licenza)
-
----
-
-## ✨ Caratteristiche
-
-- 🎮 **Gioco completo** con tutte le fasi del programma TV originale
-- 🎨 **Interfaccia moderna** con design accattivante e animazioni fluide
-- 🔊 **Effetti sonori** per ogni azione di gioco
-- 🎵 **Musica di sottofondo** nella homepage
-- 👥 **Multiplayer locale** - da 2 a 4 giocatori
-- 📱 **Responsive design** - funziona su desktop e tablet
-- ⚙️ **Pannello admin** per gestire le frasi
-- 🎯 **265+ frasi precaricate** suddivise in categorie
-- 💾 **Nessun server richiesto** - funziona completamente offline
+- [Caratteristiche](#caratteristiche)
+- [Struttura del Gioco](#struttura-del-gioco)
+- [Installazione](#installazione)
+- [Come Giocare](#come-giocare)
+- [Pannello Admin](#pannello-admin)
+- [Struttura dei File](#struttura-dei-file)
+- [Personalizzazione](#personalizzazione)
+- [Supporta il Progetto](#supporta-il-progetto)
+- [Licenza](#licenza)
 
 ---
 
-## 🎯 Struttura del Gioco
+## Caratteristiche
+
+- **Gioco completo** con tutte le fasi del programma TV originale
+- **Interfaccia moderna** con design accattivante e animazioni fluide
+- **Effetti sonori** per ogni azione di gioco
+- **Musica di sottofondo** nella homepage
+- **Multiplayer locale** da 2 a 4 giocatori
+- **Responsive design** funziona su desktop e tablet
+- **Pannello admin** per gestire le frasi
+- **265+ frasi precaricate** suddivise in categorie
+- **Nessun server richiesto** funziona completamente offline
+
+---
+
+## Struttura del Gioco
 
 Il gioco si articola in diverse fasi, completamente configurabili:
 
 ### 1. Round Fast (1-3 round)
-- Velocità e intuito
-- Il giocatore che indovina la frase guadagna punti bonus
-- Vince chi è più rapido
+Velocità e intuito. Il giocatore che indovina la frase guadagna punti bonus. Vince chi è più rapido.
 
 ### 2. Round Tradizionali (1-5 round)
-- Gira la ruota per determinare il valore delle consonanti
-- Compra le vocali a €250 ciascuna
-- Indovina la frase per vincere il montepremi accumulato
+Gira la ruota per determinare il valore delle consonanti. Compra le vocali a €250 ciascuna. Indovina la frase per vincere il montepremi accumulato.
 
 ### 3. Ultimo Round
-- Valore fisso per ogni consonante (determinato dalla ruota)
-- Tutti i giocatori competono per l'ultimo round prima della finale
-- In caso di pareggio, si ripete il round
+Valore fisso per ogni consonante (determinato dalla ruota). Tutti i giocatori competono per l'ultimo round prima della finale. In caso di pareggio nel montepremi, si ripete il round.
 
 ### 4. Finale
-- Solo il giocatore con il montepremi più alto accede
-- Tre fasi a tempo: Round Finale, Testacoda, Round Libero
-- Indovina per vincere il premio finale!
+Solo il giocatore con il montepremi più alto accede. Tre fasi a tempo: Round Finale, Testacoda, Round Libero. Indovina per vincere il premio finale.
 
 ---
 
-## 🚀 Installazione
+## Installazione
 
 ### Requisiti
 - Un browser web moderno (Chrome, Firefox, Edge, Safari)
@@ -79,14 +71,14 @@ Il gioco si articola in diverse fasi, completamente configurabili:
    - Naviga nella cartella del progetto
    - Apri `game.html` con il tuo browser
 
-3. **Gioca!**
+3. **Gioca**
    - Inserisci i nomi dei giocatori
    - Configura i round desiderati
    - Premi "Inizia Partita"
 
 ---
 
-## 🎮 Come Giocare
+## Come Giocare
 
 ### Configurazione Iniziale
 1. Inserisci i nomi dei giocatori (2-4 giocatori)
@@ -102,35 +94,36 @@ Il gioco si articola in diverse fasi, completamente configurabili:
 - **Soluzione**: Inserisci la frase completa per vincere il round
 
 ### Caselle Speciali della Ruota
+
 | Casella | Effetto |
 |---------|---------|
-| 💰 Valori | Da €100 a €2000 per consonante |
-| 🔄 PASSA | Passa il turno al prossimo giocatore |
-| 💀 BANCAROTTA | Perdi tutto il montepremi del round |
-| 🃏 JOLLY | Ottieni un jolly (usalo come vocale gratis) |
-| ⚡ EXPRESS | Modalità veloce - continua finché non sbagli |
-| 2️⃣ RADDOPPIA | Raddoppia il valore della prossima consonante |
+| Valori | Da €100 a €2000 per consonante |
+| PASSA | Passa il turno al prossimo giocatore |
+| BANCAROTTA | Perdi tutto il montepremi del round |
+| JOLLY | Ottieni un jolly (usalo come vocale gratis) |
+| EXPRESS | Modalità veloce - continua finché non sbagli |
+| RADDOPPIA | Raddoppia il valore della prossima consonante |
 
 ---
 
-## ⚙️ Pannello Admin
+## Pannello Admin
 
-Accedi al pannello admin cliccando sull'icona ⚙️ in alto a destra.
+Accedi al pannello admin cliccando sull'icona impostazioni in alto a destra.
 
 ### Funzionalità
-- 📝 **Aggiungi nuove frasi** con categoria
-- ✏️ **Modifica frasi esistenti**
-- 🗑️ **Elimina frasi**
-- 📊 **Visualizza statistiche** delle frasi per categoria
-- 👁️ **Mostra/Nascondi** la frase corrente
-- 💾 **Esporta/Importa** l'archivio frasi in JSON
+- **Aggiungi nuove frasi** con categoria
+- **Modifica frasi esistenti**
+- **Elimina frasi**
+- **Visualizza statistiche** delle frasi per categoria
+- **Mostra/Nascondi** la frase corrente
+- **Esporta/Importa** l'archivio frasi in JSON
 
 ### Categorie Disponibili
-Sport, Film, Canzoni, Proverbi, Modi di Dire, Luoghi, Cibi, Animali, Natura, Arte, Scienza, Storia, Geografia, Tecnologia, Moda, Musica, Letteratura, Teatro, Televisione, Fumetti, Videogiochi, Economia, Politica, Religione, Filosofia, e molte altre!
+Sport, Film, Canzoni, Proverbi, Modi di Dire, Luoghi, Cibi, Animali, Natura, Arte, Scienza, Storia, Geografia, Tecnologia, Moda, Musica, Letteratura, Teatro, Televisione, Fumetti, Videogiochi, Economia, Politica, Religione, Filosofia, e molte altre.
 
 ---
 
-## 📁 Struttura dei File
+## Struttura dei File
 
 ```
 Ruota-della-Fortuna/
@@ -154,10 +147,10 @@ Ruota-della-Fortuna/
 
 ---
 
-## 🎨 Personalizzazione
+## Personalizzazione
 
 ### Aggiungere Nuove Frasi
-1. Apri il pannello Admin (⚙️)
+1. Apri il pannello Admin
 2. Clicca "Aggiungi Frase"
 3. Inserisci categoria e frase
 4. Salva
@@ -170,17 +163,15 @@ Modifica il file `resources/styles.css` per cambiare colori, font e layout.
 
 ---
 
-## 💖 Supporta il Progetto
+## Supporta il Progetto
 
 Se ti piace questo progetto e vuoi supportare lo sviluppo:
 
 [![PayPal](https://img.shields.io/badge/PayPal-Dona-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/dimichele99)
 
-Ogni contributo è apprezzato e aiuta a mantenere il progetto attivo! 🙏
-
 ---
 
-## 👨‍💻 Autore
+## Autore
 
 **Michele Di Gennaro**
 
@@ -189,23 +180,13 @@ Ogni contributo è apprezzato e aiuta a mantenere il progetto attivo! 🙏
 
 ---
 
-## 📄 Licenza
+## Licenza
 
 Questo progetto è distribuito con licenza MIT. Sei libero di usare, modificare e distribuire questo software.
 
 ---
 
-## 🙏 Ringraziamenti
+## Ringraziamenti
 
 - Ispirato al celebre game show "La Ruota della Fortuna"
 - Grazie a tutti coloro che contribuiscono con suggerimenti e feedback
-
----
-
-<p align="center">
-  <b>Buon divertimento! 🎉</b>
-</p>
-
-<p align="center">
-  Made with ❤️ in Italy
-</p>
