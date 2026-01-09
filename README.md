@@ -40,11 +40,11 @@ Un'applicazione web interattiva che riproduce il celebre gioco televisivo "La Ru
 
 Il gioco si articola in diverse fasi, completamente configurabili:
 
-### 1. Round Fast (1-3 round)
-Velocità e intuito. Il giocatore che indovina la frase guadagna punti bonus. Vince chi è più rapido.
+### 1. Round Fast
+Velocità e intuito. Il giocatore che indovina la frase guadagna punti bonus. Vince chi è più rapido. Numero di round configurabile senza limiti.
 
-### 2. Round Tradizionali (1-5 round)
-Gira la ruota per determinare il valore delle consonanti. Compra le vocali a €250 ciascuna. Indovina la frase per vincere il montepremi accumulato.
+### 2. Round Tradizionali
+Gira la ruota per determinare il valore delle consonanti. Compra le vocali a €250 ciascuna. Indovina la frase per vincere il montepremi accumulato. Numero di round configurabile senza limiti.
 
 ### 3. Ultimo Round
 Valore fisso per ogni consonante (determinato dalla ruota). Tutti i giocatori competono per l'ultimo round prima della finale. In caso di pareggio nel montepremi, si ripete il round.
@@ -82,8 +82,8 @@ Solo il giocatore con il montepremi più alto accede. Tre fasi a tempo: Round Fi
 
 ### Configurazione Iniziale
 1. Inserisci i nomi dei giocatori (2-4 giocatori)
-2. Seleziona quanti round Fast vuoi giocare (0-3)
-3. Seleziona quanti round Tradizionali vuoi giocare (1-5)
+2. Seleziona quanti round Fast vuoi giocare (nessun limite massimo)
+3. Seleziona quanti round Tradizionali vuoi giocare (nessun limite massimo)
 4. Attiva/disattiva l'Ultimo Round
 5. Clicca su "Inizia Partita"
 
